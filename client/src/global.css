@@ -1,0 +1,93 @@
+/* Reset browser defaults */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #121212;
+    color: #fff;
+  }
+  
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  /* Container styling */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  /* Layout main section */
+  .main-layout {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 40px 20px;
+  }
+  
+  /* Buttons */
+  button {
+    background-color: #ef4444;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #dc2626;
+  }
+  
+  /* Form Elements */
+  input,
+  select,
+  textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fff;
+    color: #000;
+  }
+  
+  input::placeholder,
+  textarea::placeholder {
+    color: #777;
+  }
+  
+  label {
+    margin-bottom: 8px;
+    display: block;
+    font-weight: bold;
+  }
+  
+  /* Footer */
+  footer {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+  }
+  
+  footer a {
+    background-color: #ef4444;
+    color: white;
+    padding: 16px;
+    border-radius: 9999px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  }
+  
+  footer a:hover {
+    background-color: #dc2626;
+  }
+  
