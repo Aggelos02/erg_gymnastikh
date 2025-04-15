@@ -31,7 +31,19 @@
 - Εργασία σε branch `kostas-style` & Pull Request
 - Συνεργασία στον εβδομαδιαίο πλάνο
 
+Ανοιγμα σελιδας στο React
+cd client
+npm run dev
 
+Local:   http://localhost:5173/
+
+Για το ανοιγμα του server 
+cd server
+node server.js
+🚀 Server is running on http://localhost:3001
+και
+http://localhost:3001/api/workouts
+Για τα Δεδομένα backend 
 
 ## 📝 Ιστορικό Αλλαγών
 Μπορείτε να δείτε όλα τα commits και ποιος τα έκανε στο [GitHub Commit History](https://github.com/Aggelos02/erg_gymnastikh/commits/main)
