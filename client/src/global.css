@@ -70,15 +70,51 @@ form button:hover {
   background-color: #c12b37;
 }
 
-header {
+/* Header Styles */
+.main-header {
+  background-color: #14a19aee;
+  padding: 0.75rem 2rem;
   position: sticky;
   top: 0;
   z-index: 1000;
-  background-color: #0f172a; 
-  padding: 0.5rem 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 80px; 
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+}
+
+.logo-img {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  color: var(--accent-color);
+}
+html {
+  scroll-behavior: smooth;
 }

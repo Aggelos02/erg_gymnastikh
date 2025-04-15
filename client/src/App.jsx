@@ -5,6 +5,7 @@ import WeeklyPlan from './components/WeeklyPlan';
 import ContactForm from './components/ContactForm';
 import ProgressForm from './components/ProgressForm';
 import Footer from './components/Footer';
+import WorkoutList from './components/WorkoutList';
 import './global.css';
 
 function App() {
@@ -25,6 +26,10 @@ function App() {
           <section id="progress">
             <ProgressForm />
           </section>
+          <section id="workouts">
+            <WorkoutList />
+          </section>
+
         </main>
       </div>
       <Footer />
