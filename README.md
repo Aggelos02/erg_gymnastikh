@@ -32,7 +32,9 @@
 - Συνεργασία στον εβδομαδιαίο πλάνο
 
 Ανοιγμα σελιδας στο React
+
 cd client
+
 npm run dev
 
 Local:   http://localhost:5173/
