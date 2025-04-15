@@ -1,43 +1,50 @@
 import React from 'react';
 
-function WeeklyPlan() {
-  const schedule = [
+const WeeklyPlan = () => {
+  const plan = [
     { day: 'Δευτέρα', activity: 'Πόδια & Cardio' },
     { day: 'Τρίτη', activity: 'Άνω Σώμα' },
     { day: 'Τετάρτη', activity: 'Yoga / Ξεκούραση' },
     { day: 'Πέμπτη', activity: 'Πλάτη & Κοιλιακοί' },
     { day: 'Παρασκευή', activity: 'Στήθος & Cardio' },
-    { day: 'Σάββατο', activity: 'Ολόσωμη προπόνηση' },
+    { day: 'Σάββατο', activity: 'Ολόσωμη Προπόνηση' },
     { day: 'Κυριακή', activity: 'Ξεκούραση' },
   ];
 
   return (
-    <section className="weekly-plan" style={{ textAlign: 'center', padding: '2rem' }}>
-      <h2 style={{ color: '#f43f5e', marginBottom: '1rem' }}>Εβδομαδιαίο Πρόγραμμα</h2>
-      <table style={{ margin: '0 auto', borderCollapse: 'collapse' }}>
+    <div className="weekly-plan">
+      <h2 style={{ marginBottom: '1rem', color: '#d3195a' }}>Εβδομαδιαίο Πρόγραμμα</h2>
+      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
           <tr>
-            <th style={cellStyle}>Ημέρα</th>
-            <th style={cellStyle}>Δραστηριότητα</th>
+            <th style={styles.th}>Ημέρα</th>
+            <th style={styles.th}>Δραστηριότητα</th>
           </tr>
         </thead>
         <tbody>
-          {schedule.map((item, idx) => (
-            <tr key={idx}>
-              <td style={cellStyle}>{item.day}</td>
-              <td style={cellStyle}>{item.activity}</td>
+          {plan.map((item, index) => (
+            <tr key={index}>
+              <td style={styles.td}>{item.day}</td>
+              <td style={styles.td}>{item.activity}</td>
             </tr>
           ))}
         </tbody>
       </table>
-    </section>
+    </div>
   );
-}
+};
 
-const cellStyle = {
-  border: '1px solid #ccc',
-  padding: '8px 16px',
-  color: '#fff',
+const styles = {
+  th: {
+    backgroundColor: '#f2f2f2',
+    padding: '10px',
+    border: '1px solid #ccc',
+    textAlign: 'left',
+  },
+  td: {
+    padding: '10px',
+    border: '1px solid #ccc',
+  },
 };
 
 export default WeeklyPlan;
