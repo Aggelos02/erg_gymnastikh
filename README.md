@@ -31,8 +31,7 @@
 - Εργασία σε branch `kostas-style` & Pull Request
 - Συνεργασία στον εβδομαδιαίο πλάνο
 
-🌐 Live Ιστοσελίδα
-🔗 [Δείτε την σελίδα εδώ](https://Aggelos02.github.io/erg_gymnastikh)
+
 
 ## 📝 Ιστορικό Αλλαγών
 Μπορείτε να δείτε όλα τα commits και ποιος τα έκανε στο [GitHub Commit History](https://github.com/Aggelos02/erg_gymnastikh/commits/main)
