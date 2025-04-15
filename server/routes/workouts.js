@@ -17,6 +17,18 @@ router.get('/', (req, res) => {
   });
 });
 
+router.delete('/:id', (req, res) => {
+  const { id } = req.params;
+  const query = 'DELETE FROM workouts WHERE id = ?';
+
+  db.run(query, [id], function (err) {
+    if (err) {
+      return res.status(500).json({ error: 'Σφάλμα διαγραφής από τη βάση.' });
+    }
+    res.json({ message: 'Η προπόνηση διαγράφηκε επιτυχώς.' });
+  });
+});
+
 // POST: Προσθήκη νέου workout
 router.post('/', (req, res) => {
   const { user, type, duration, date } = req.body;

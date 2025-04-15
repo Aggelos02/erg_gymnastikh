@@ -20,3 +20,15 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   console.log(`🚀 Server is running on http://localhost:${port}`);
 });
+app.delete('/api/workouts/:id', (req, res) => {
+  const id = req.params.id;
+
+  const query = 'DELETE FROM workouts WHERE id = ?';
+  db.run(query, [id], function(err) {
+    if (err) {
+      console.error('Σφάλμα διαγραφής:', err);
+      return res.status(500).json({ error: 'Σφάλμα διαγραφής από βάση' });
+    }
+    res.status(200).json({ success: true });
+  });
+});
