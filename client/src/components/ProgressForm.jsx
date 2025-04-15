@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 
-function ProgressForm() {
+const ProgressForm = () => {
   const [formData, setFormData] = useState({
     user: '',
     type: '',
     duration: '',
-    date: ''
+    date: '',
   });
 
   const handleChange = (e) => {
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
       [e.target.name]: e.target.value
     }));
@@ -22,25 +22,51 @@ function ProgressForm() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData)
     });
-
     if (res.ok) {
-      alert('✅ Καταχωρήθηκε επιτυχώς!');
+      alert('✅ Καταχωρήθηκε!');
       setFormData({ user: '', type: '', duration: '', date: '' });
     } else {
-      alert('❌ Σφάλμα κατά την υποβολή!');
+      alert('❌ Σφάλμα στην αποστολή!');
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="progress-form">
+    <form className="progress-form" onSubmit={handleSubmit}>
       <h2>Καταγραφή Προπόνησης</h2>
-      <input name="user" placeholder="Όνομα χρήστη" value={formData.user} onChange={handleChange} />
-      <input name="type" placeholder="Τύπος άσκησης" value={formData.type} onChange={handleChange} />
-      <input name="duration" placeholder="Διάρκεια (λεπτά)" value={formData.duration} onChange={handleChange} />
-      <input name="date" type="date" value={formData.date} onChange={handleChange} />
+      <input
+        type="text"
+        name="user"
+        value={formData.user}
+        onChange={handleChange}
+        placeholder="Όνομα χρήστη"
+        required
+      />
+      <input
+        type="text"
+        name="type"
+        value={formData.type}
+        onChange={handleChange}
+        placeholder="Τύπος άσκησης"
+        required
+      />
+      <input
+        type="number"
+        name="duration"
+        value={formData.duration}
+        onChange={handleChange}
+        placeholder="Διάρκεια (λεπτά)"
+        required
+      />
+      <input
+        type="date"
+        name="date"
+        value={formData.date}
+        onChange={handleChange}
+        required
+      />
       <button type="submit">Καταχώρηση</button>
     </form>
   );
-}
+};
 
 export default ProgressForm;

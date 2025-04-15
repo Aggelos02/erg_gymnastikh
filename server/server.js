@@ -3,13 +3,18 @@ const cors = require('cors');
 const app = express();
 const port = 3001;
 
-// Middlewares
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Routes
+// API Routes
 const workoutsRouter = require('./routes/workouts');
 app.use('/api/workouts', workoutsRouter);
+
+// Default route (προαιρετικά για έλεγχο)
+app.get('/', (req, res) => {
+  res.send('API is running ✅');
+});
 
 // Start server
 app.listen(port, () => {
