@@ -1,0 +1,77 @@
+.auth-container {
+    display: flex;
+    min-height: 100vh;
+  }
+  
+  /* Αριστερή εικόνα background για login & register */
+  .auth-image-section {
+    flex: 1;
+    background-size: cover;
+    background-position: center;
+  }
+  
+  /* Συγκεκριμένες εικόνες ανά σελίδα */
+  .login-bg {
+    background-image: url('../../assets/women-swimming.jpg');
+  }
+  
+  /* Register background image */
+    .register-bg {
+    background-image: url('../../assets/man-mtb-2.jpg');
+  }
+  
+  
+  .auth-form-section {
+    flex: 1;
+    background-color: #9b9898; /* ανοιχτό γκρι για καλύτερη αντίθεση */
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .auth-logo {
+    width: 250px;
+    margin-bottom: 2rem;
+  }
+  
+  .auth-form {
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .auth-form h2 {
+    margin-bottom: 1rem;
+    color: #14a19a;
+  }
+  
+  .auth-form input {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  
+  .auth-form button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #14a19a;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .auth-form button:hover {
+    background-color: #118880;
+  }
+  
+  .auth-footer {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+  }
+  

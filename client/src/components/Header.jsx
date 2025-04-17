@@ -14,6 +14,8 @@ function Header() {
           <a href="#workouts">Workouts</a>
           <a href="#progress">BLOG</a>
           <a href="#contact">ΕΠΙΚΟΙΝΩΝΙΑ</a>
+          <a href="/login">Login</a>
+          <a href="/register">Sign Up</a>
         </nav>
       </div>
     </header>
