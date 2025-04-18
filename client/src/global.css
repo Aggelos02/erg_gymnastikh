@@ -102,6 +102,7 @@ form button:hover {
 .nav-links {
   display: flex;
   gap: 2rem;
+  list-style: none;
 }
 
 .nav-links a {
@@ -115,6 +116,87 @@ form button:hover {
 .nav-links a:hover {
   color: var(--accent-color);
 }
+
+.user-dropdown {
+  position: relative;
+}
+
+.avatar {
+  background-color: #14a19a;
+  color: white;
+  width: 36px;
+  height: 36px;
+  font-weight: bold;
+  font-size: 1rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 150px;
+  z-index: 10;
+}
+
+.dropdown-content button {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-align: left;
+}
+
+.dropdown-content button:hover {
+  color: var(--accent-color);
+}
+
 html {
   scroll-behavior: smooth;
+}
+
+.guest-info {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  grid-column: span 2;
+  text-align: center;
+}
+
+.guest-info h2 {
+  color: var(--accent-color);
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.guest-info p {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.guest-button {
+  background-color: #14a19a;
+  color: white;
+  padding: 0.8rem 1.4rem;
+  font-weight: bold;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.guest-button:hover {
+  background-color: #117a74;
 }
