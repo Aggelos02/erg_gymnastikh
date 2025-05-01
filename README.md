@@ -70,16 +70,7 @@ node index.js
 
 http://localhost:3001/api/users
 
-📁 Δομή Project
 
-├── client
-│   ├── src
-│   │   ├── components
-│   │   ├── pages
-│   │   └── App.jsx
-├── server
-│   ├── index.js
-│   └── gym.db
 
 📝 Ιστορικό Αλλαγών
 

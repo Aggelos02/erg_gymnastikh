@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 
 const ResetPassword = () => {
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const token = searchParams.get('token');
-
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
@@ -15,29 +11,25 @@ const ResetPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!password || !confirmPassword) {
+    if (!email || !newPassword || !confirmPassword) {
       setError('All fields are required.');
       return;
     }
 
-    if (password !== confirmPassword) {
+    if (newPassword !== confirmPassword) {
       setError('Passwords do not match.');
       return;
     }
 
     try {
       const response = await axios.post('http://localhost:3001/api/reset-password', {
-        token,
-        password,
+        email,
+        newPassword
       });
       setMessage(response.data.message);
       setError('');
-
-      setTimeout(() => {
-        navigate('/login');
-      }, 2000);
     } catch (err) {
-      setError(err.response?.data?.error || 'Something went wrong.');
+      setError(err.response?.data?.error || 'An error occurred.');
       setMessage('');
     }
   };
@@ -48,11 +40,18 @@ const ResetPassword = () => {
         <h2 className="text-2xl font-bold mb-6 text-center text-dark">Reset Password</h2>
         <form onSubmit={handleSubmit}>
           <input
+            type="email"
+            placeholder="Your Email"
+            className="w-full mb-4 px-4 py-2 border rounded"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
             type="password"
             placeholder="New Password"
             className="w-full mb-4 px-4 py-2 border rounded"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
           />
           <input
             type="password"
@@ -62,7 +61,7 @@ const ResetPassword = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
           <button className="w-full bg-primary text-white py-2 rounded hover:bg-blue-700 transition">
-            Update Password
+            Reset Password
           </button>
         </form>
         {message && <p className="text-green-500 mt-4 text-center">{message}</p>}

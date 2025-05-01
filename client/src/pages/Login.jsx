@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -18,7 +18,10 @@ const Login = () => {
 
     try {
       // Call the login API to authenticate the user
-      const response = await axios.post('http://localhost:3001/api/login', { email, password });
+      const response = await axios.post('http://localhost:3001/api/login', {
+        email,
+        password,
+      });
 
       // ✅ Αποθήκευση του χρήστη στο localStorage
       localStorage.setItem('userId', response.data.userId);
@@ -54,9 +57,13 @@ const Login = () => {
             Login
           </button>
         </form>
+
         <div className="mt-4 text-center">
-          <a href="/forgot-password" className="text-primary hover:underline">Forgot your password?</a>
+          <Link to="/forgot-password" className="text-primary hover:underline">
+            Forgot your password?
+          </Link>
         </div>
+
         {error && <p className="text-red-500 mt-4 text-center">{error}</p>}
       </div>
     </div>
