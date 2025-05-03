@@ -142,6 +142,9 @@ erg_gymnastikh/
 ### Footer και Τελική Ενότητα
 ![Footer](./screenshots/Screenshot_5.png)
 
+### Dashboard Preview
+![Dashboard Preview](./screenshots/Screenshot_6.png)
+
 ---
 
 ## 👨‍💻 Συμμετέχοντες
