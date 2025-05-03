@@ -26,9 +26,11 @@ const Login = () => {
       // ✅ Αποθήκευση του χρήστη στο localStorage
       localStorage.setItem('userId', response.data.userId);
       localStorage.setItem('username', response.data.username);
+      localStorage.setItem('xp', response.data.xp); // νέο
+      localStorage.setItem('level', response.data.level); // νέο
 
-      // Ανακατεύθυνση στην αρχική σελίδα
-      navigate('/');
+      // Ανακατεύθυνση στο Dashboard
+      navigate('/dashboard');
     } catch (err) {
       setError(err.response?.data?.error || 'An error occurred');
     }
