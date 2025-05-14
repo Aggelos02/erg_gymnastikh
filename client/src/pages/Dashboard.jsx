@@ -1,6 +1,8 @@
+// client/src/pages/Dashboard.jsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Leaderboard from '../components/Leaderboard';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -14,6 +16,8 @@ const Dashboard = () => {
     notes: ''
   });
   const [message, setMessage] = useState('');
+  const [leaderboard, setLeaderboard] = useState([]);
+  const xpToNextLevel = 300;
 
   useEffect(() => {
     const storedUsername = localStorage.getItem('username');
@@ -26,10 +30,22 @@ const Dashboard = () => {
       setUser({
         username: storedUsername,
         xp: parseInt(storedXP || '0', 10),
-        level: parseInt(storedLevel || '1', 10),
+        level: parseInt(storedLevel || '0', 10),
       });
     }
   }, [navigate]);
+
+  useEffect(() => {
+    const fetchLeaderboard = async () => {
+      try {
+        const res = await axios.get('http://localhost:3001/api/leaderboard');
+        setLeaderboard(res.data);
+      } catch (err) {
+        console.error('Failed to fetch leaderboard:', err);
+      }
+    };
+    fetchLeaderboard();
+  }, []);
 
   const fetchWorkouts = async () => {
     const userId = localStorage.getItem('userId');
@@ -47,12 +63,18 @@ const Dashboard = () => {
     fetchWorkouts();
   }, []);
 
+  const getXPGain = (level) => {
+    const gain = 50 - (level - 1) * 5;
+    return gain < 10 ? 10 : gain;
+  };
+
   const handleEarnXPAndDelete = async (userId, workoutId) => {
+    const xpGain = getXPGain(user.level);
     try {
       const res = await axios.post('http://localhost:3001/api/earn-xp-and-delete', {
         userId,
         workoutId,
-        xpGain: 50,
+        xpGain
       });
 
       localStorage.setItem('xp', res.data.xp);
@@ -82,7 +104,8 @@ const Dashboard = () => {
     try {
       await axios.post('http://localhost:3001/api/workouts', {
         userId: Number(userId),
-        ...form
+        ...form,
+        date: new Date(form.date).toISOString().split('T')[0]
       });
 
       setForm({ title: '', category: '', duration: '', date: '', notes: '' });
@@ -108,8 +131,32 @@ const Dashboard = () => {
 
   if (!user) return null;
 
-  const xpToNextLevel = 300;
   const progress = (user.xp % xpToNextLevel) / xpToNextLevel * 100;
+  const totalXP = user.level * xpToNextLevel + user.xp;
+  const maxXP = 3000;
+  const strengthGainPercent = Math.min(100, Math.floor((totalXP / maxXP) * 100));
+  let strengthLabel = 'Beginner';
+  if (totalXP >= 1000) strengthLabel = 'Intermediate';
+  if (totalXP >= 2000) strengthLabel = 'Advanced';
+  if (totalXP >= 2800) strengthLabel = 'Elite';
+
+  const initialGain = getXPGain(1);
+  const completedWorkouts = Math.floor(totalXP / initialGain);
+
+  let goalProgressDisplay = 'Top Rank!';
+  const currentIndex = leaderboard.findIndex(u => u.username === user.username);
+  if (leaderboard.length > 1 && currentIndex > 0) {
+    const aboveUser = leaderboard[currentIndex - 1];
+    const currentXP = user.level * xpToNextLevel + user.xp;
+    const aboveXP = aboveUser.level * xpToNextLevel + aboveUser.xp;
+
+    if (currentXP === aboveXP) {
+      goalProgressDisplay = '⚖️ Tied';
+    } else if (currentXP < aboveXP) {
+      const diff = aboveXP - currentXP;
+      goalProgressDisplay = `${Math.max(0, 100 - (diff / xpToNextLevel) * 100).toFixed(1)}%`;
+    }
+  }
 
   const getDayOfWeek = (dateStr) => {
     const date = new Date(dateStr);
@@ -132,6 +179,8 @@ const Dashboard = () => {
         <h1 className="text-3xl font-bold text-gray-800">Welcome back, {user.username}!</h1>
       </header>
 
+      <Leaderboard />
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white p-6 rounded-2xl shadow">
           <h2 className="text-xl font-semibold text-gray-700 mb-2">🏆 Level {user.level}</h2>
@@ -153,22 +202,23 @@ const Dashboard = () => {
           <h2 className="text-xl font-semibold text-gray-700 mb-4">📈 Your Stats</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="bg-gray-100 p-4 rounded-xl text-center">
-              <p className="text-lg font-bold">12</p>
-              <p className="text-sm text-gray-500">Workouts This Month</p>
+              <p className="text-lg font-bold">{completedWorkouts}</p>
+              <p className="text-sm text-gray-500">Workouts Completed</p>
             </div>
             <div className="bg-gray-100 p-4 rounded-xl text-center">
-              <p className="text-lg font-bold">+8.5%</p>
+              <p className="text-lg font-bold">{strengthLabel} (+{strengthGainPercent}%)</p>
               <p className="text-sm text-gray-500">Strength Gain</p>
             </div>
             <div className="bg-gray-100 p-4 rounded-xl text-center">
-              <p className="text-lg font-bold">65%</p>
+              <p className="text-lg font-bold">{goalProgressDisplay}</p>
               <p className="text-sm text-gray-500">Goal Progress</p>
             </div>
           </div>
         </div>
 
+        {/* Weekly Plan */}
         <div className="bg-white p-6 rounded-2xl shadow col-span-1 md:col-span-2">
-          <h2 className="text-xl font-semibold text-gray-700 mb-4">🗓️ Workout History</h2>
+          <h2 className="text-xl font-semibold text-gray-700 mb-4">📅 Weekly Workout Schedule</h2>
           <div className="grid grid-cols-7 divide-x divide-gray-200 border border-gray-200 rounded-lg overflow-hidden text-center text-sm">
             {days.map((day) => (
               <div key={day} className="p-2 min-h-32">
@@ -201,6 +251,7 @@ const Dashboard = () => {
           </div>
         </div>
 
+        {/* Add Workout */}
         <div className="bg-white p-6 rounded-2xl shadow col-span-1 md:col-span-2">
           <h2 className="text-xl font-semibold text-gray-700 mb-4">➕ Add New Workout</h2>
           {message && <p className="text-green-500 text-sm mb-4">{message}</p>}

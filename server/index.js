@@ -32,7 +32,7 @@ db.run(`
     email TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
     xp INTEGER DEFAULT 0,
-    level INTEGER DEFAULT 1
+    level INTEGER DEFAULT 0
   )
 `);
 
@@ -161,7 +161,7 @@ app.post('/api/register', async (req, res) => {
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
-  const query = `INSERT INTO users (username, email, password, xp, level) VALUES (?, ?, ?, 0, 1)`;
+  const query = `INSERT INTO users (username, email, password, xp, level) VALUES (?, ?, ?, 0, 0)`;
 
   db.run(query, [username, email, hashedPassword], function (err) {
     if (err) return res.status(500).json({ error: 'User already exists or DB error.' });
@@ -189,7 +189,7 @@ app.post('/api/login', (req, res) => {
       userId: user.id,
       username: user.username,
       xp: user.xp || 0,
-      level: user.level || 1
+      level: user.level ?? 0
     });
   });
 });
@@ -301,6 +301,24 @@ app.get('/api/users', (req, res) => {
     res.json(rows);
   });
 });
+
+// ✅ Leaderboard - Top 3 χρήστες με τα περισσότερα level
+app.get('/api/leaderboard', (req, res) => {
+  const sql = `
+    SELECT username, xp, level
+    FROM users
+    ORDER BY level DESC, xp DESC
+    LIMIT 3
+  `;
+  db.all(sql, [], (err, rows) => {
+    if (err) {
+      console.error('Error fetching leaderboard:', err.message);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+    res.json(rows);
+  });
+});
+
 
 // Start Server
 

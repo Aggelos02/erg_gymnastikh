@@ -12,6 +12,7 @@ import Signup from './pages/Signup';
 import ForgotPassword from './pages/ForgotPassword'; 
 import ResetPassword from './pages/ResetPassword';
 import Dashboard from './pages/Dashboard';
+import ProtectedRoute from './components/ProtectedRoute'; // ✅ προστέθηκε
 
 function ScrollToTopOnRouteChange() {
   const { pathname } = useLocation();
@@ -23,8 +24,6 @@ function ScrollToTopOnRouteChange() {
 
 function App() {
   const location = useLocation();
-
-  // Κρύβει Footer σε συγκεκριμένες σελίδες
   const hideFooter = ['/login', '/signup', '/forgot-password'].includes(location.pathname);
 
   return (
@@ -49,7 +48,15 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
 
       {!hideFooter && <Footer />}
