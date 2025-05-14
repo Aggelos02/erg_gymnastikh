@@ -1,7 +1,7 @@
 
 # 🏋️‍♂️ AI Gym Master
 
-**AI Gym Master** είναι μια web εφαρμογή για την **οργάνωση και παρακολούθηση προπονήσεων**, βασισμένη σε React και Node.js. Στόχος είναι η παροχή ενός έξυπνου συστήματος που βοηθά τους χρήστες να δημιουργούν πλάνα άσκησης, να παρακολουθούν την πρόοδο τους και να πετυχαίνουν τους στόχους τους.
+Το **AI Gym Master** είναι μια ολοκληρωμένη web εφαρμογή για την οργάνωση και παρακολούθηση προπονήσεων. Είναι βασισμένη σε **React** (frontend) και **Node.js + Express** (backend) με **SQLite** βάση δεδομένων. Περιλαμβάνει σύστημα XP/Level, στατιστικά, δυναμική βιβλιοθήκη ασκήσεων, και διαδραστικό εβδομαδιαίο πρόγραμμα.
 
 ---
 
@@ -34,44 +34,56 @@ npm run dev
 ---
 
 ## 🧩 Λειτουργίες
+👤 Διαχείριση Χρηστών
+Εγγραφή, Σύνδεση, Αποσύνδεση
+Επαναφορά Κωδικού (χωρίς email token)
+Διαγραφή Λογαριασμού
+Τοπική αποθήκευση session (localStorage)
 
-### 👤 Διαχείριση Χρηστών
-- Εγγραφή, σύνδεση, αποσύνδεση
-- Επαναφορά κωδικού (χωρίς email)
-- Δυναμική εμφάνιση κουμπιών ανά login status
-- Διαγραφή λογαριασμού
+🏋️ Προγράμματα & Ασκήσεις
+Προσθήκη, Προβολή και Διαγραφή Ασκήσεων
+Εβδομαδιαίο Πλάνο προπονήσεων (Smart Weekly Schedule)
+Ομαδοποίηση ασκήσεων ανά ημέρα
 
-### 🏋️ Προγράμματα & Ασκήσεις
-- Προσθήκη, προβολή και διαγραφή ασκήσεων
-- Προβολή βιβλιοθήκης ασκήσεων
-- Οργάνωση εβδομαδιαίου πλάνου
+📈 Παρακολούθηση Προόδου
+Δείκτες:
+  Workouts Completed
+  Strength Gain (βάσει XP)
+  Goal Progress με συγκριτικό πίνακα
+  Visual XP Progress Bar
 
-### 📈 Παρακολούθηση Προόδου
-- Δείκτες: Workouts Completed, Strength Increase, Goal Progress
-- Δυναμικές μπάρες προόδου
-
-### 🏆 Gamification
-- ✅ Οπτική αναπαράσταση προόδου
-- 🔜 (υπό ανάπτυξη) Leaderboard & σύστημα επιπέδων XP
+🏆 Gamification
+Σύστημα XP και Επίπεδων
+Κουμπί "🏋️ Earn XP" σε κάθε workout
+Αυτόματη αναβάθμιση level κάθε 300 XP
+🔥 Leaderboard με Top 3 Χρήστες
+⚖️ Υποστήριξη ισοβαθμιών
 
 ---
 
 ## 🔄 API Endpoints
+🧍‍♂️ Users
+Μέθοδος	Endpoint	Περιγραφή
+POST	/api/register	Δημιουργία νέου χρήστη
+POST	/api/login	Είσοδος χρήστη
+POST	/api/reset-password	Επαναφορά κωδικού
+DELETE	/api/delete-user/:id	Διαγραφή χρήστη
+GET	/api/users	Λήψη όλων των χρηστών
+GET	/api/leaderboard	Top 3 χρήστες βάσει XP
 
-### 🧍‍♂️ Users
-| Μέθοδος | Endpoint | Περιγραφή |
-|--------|----------|-----------|
-| POST | `/api/register` | Δημιουργία νέου χρήστη |
-| POST | `/api/login` | Είσοδος χρήστη |
-| POST | `/api/reset-password` | Επαναφορά κωδικού |
-| DELETE | `/api/delete/:id` | Διαγραφή χρήστη |
+🏋️‍♀️ Workouts
+Μέθοδος	Endpoint	Περιγραφή
+GET	/api/workouts/:userId	Λήψη προπονήσεων χρήστη
+POST	/api/workouts	Προσθήκη νέας προπόνησης
+DELETE	/api/delete-workout/:id	Διαγραφή προπόνησης
+POST	/api/earn-xp-and-delete	Earn XP και διαγραφή workout
+POST	/api/update-xp	Προσθήκη XP χωρίς διαγραφή
 
-### 🏋️‍♀️ Exercises
-| Μέθοδος | Endpoint | Περιγραφή |
-|--------|----------|-----------|
-| GET | `/api/exercises` | Λήψη όλων των ασκήσεων |
-| POST | `/api/exercises` | Προσθήκη νέας άσκησης |
-| DELETE | `/api/exercises/:id` | Διαγραφή άσκησης χρήστη |
+🧠 Exercises
+Μέθοδος	Endpoint	Περιγραφή
+GET	/api/exercises	Λήψη όλων των ασκήσεων
+POST	/api/exercises	Προσθήκη νέας άσκησης
+DELETE	/api/exercises/:id	Διαγραφή άσκησης (αν χρειαστεί)
 
 ---
 
@@ -79,46 +91,35 @@ npm run dev
 
 ```
 erg_gymnastikh/
-├── client/ # React frontend
-│ ├── public/
-│ └── src/
-│ ├── assets/
-│ ├── components/
-│ ├── context/
-│ ├── pages/
-│ ├── App.jsx
-│ ├── main.jsx
-│ └── app.css
+├── client/               # React frontend
+│   ├── public/
+│   └── src/
+│       ├── components/   # Leaderboard, ProtectedRoute, κ.ά.
+│       ├── pages/        # Dashboard, Login, Register
+│       ├── App.jsx, main.jsx
+│       └── styles/
 │
-├── server/ # Express backend
-│ ├── db/
-│ ├── routes/
-│ ├── index.js
-│ └── schema.js
+├── server/               # Express backend
+│   ├── index.js          # Κύριο αρχείο API
+│   ├── gym.db            # SQLite DB
+│   └── schema.js         # Δημιουργία πινάκων
 │
-├── screenshots/ # Εικόνες για το README
-├── ai-gym.db # SQLite database
+├── screenshots/          # Εικόνες README
 ├── README.md
-├── .nojekyll
 └── package.json
 ```
 
 ---
 
-## 🧠 Σχέσεις Βάσης (ERD)
+## 🧠 Σχέσεις Βάσης Δεδομένων (ERD)
+users
+id	username	email	password	xp	level
 
-**users**
-- id (PK)
-- username
-- email
-- password
+workouts
+id	user_id	title	category	duration	date	notes
 
-**exercises**
-- id (PK)
-- user_id (FK → users.id)
-- name
-- category
-- difficulty
+exercises
+id	name	category	description
 
 ➤ Κάθε άσκηση σχετίζεται με έναν συγκεκριμένο χρήστη.  
 ➤ Υποστήριξη πολλών ασκήσεων ανά χρήστη.
@@ -144,6 +145,7 @@ erg_gymnastikh/
 
 ### Dashboard Preview
 ![Dashboard Preview](./screenshots/Screenshot_6.png)
+![Dashboard Preview](./screenshots/Screenshot_7.png)
 
 ---
 
