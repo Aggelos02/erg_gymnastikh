@@ -150,8 +150,8 @@ erg_gymnastikh/
 ## 👨‍💻 Συμμετέχοντες
 
 | Όνομα | GitHub |
-| Άγγελος | [@Aggelos02](https://github.com/Aggelos02) |
-| Κώστας | [@Konstantinos820](https://github.com/Konstantinos820) |
+| Άγγελος Μπλλόκου ΑΜ 2519| [@Aggelos02](https://github.com/Aggelos02) |
+| Κωνσταντίνος Παππάς ΑΜ 2553| [@Konstantinos820](https://github.com/Konstantinos820) |
 
 ---
 
