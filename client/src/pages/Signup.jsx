@@ -15,6 +15,17 @@ const Signup = () => {
     setError('');
     setSuccess('');
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters long.');
+      return;
+    }
+
     try {
       const res = await axios.post('http://localhost:3001/api/register', {
         username,
@@ -52,6 +63,7 @@ const Signup = () => {
             className="w-full mb-4 px-4 py-2 border rounded"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            required
           />
           <input
             type="email"
@@ -59,6 +71,7 @@ const Signup = () => {
             className="w-full mb-4 px-4 py-2 border rounded"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
           <input
             type="password"
@@ -66,6 +79,7 @@ const Signup = () => {
             className="w-full mb-6 px-4 py-2 border rounded"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
           <button
             type="submit"

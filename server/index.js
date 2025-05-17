@@ -1,5 +1,3 @@
-// server/index.js
-
 const express = require('express');
 const cors = require('cors');
 const sqlite3 = require('sqlite3').verbose();
@@ -22,9 +20,6 @@ const db = new sqlite3.Database(dbPath, (err) => {
   }
 });
 
-// Create tables
-
-// ✅ Users with XP and Level
 db.run(`
   CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -36,8 +31,6 @@ db.run(`
   )
 `);
 
-// ✅ Exercises
-
 db.run(`
   CREATE TABLE IF NOT EXISTS exercises (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -46,8 +39,6 @@ db.run(`
     description TEXT
   )
 `);
-
-// ✅ Reset Tokens
 
 db.run(`
   CREATE TABLE IF NOT EXISTS reset_tokens (
@@ -58,8 +49,6 @@ db.run(`
     FOREIGN KEY (user_id) REFERENCES users(id)
   )
 `);
-
-// ✅ Workouts Table
 
 db.run(`
   CREATE TABLE IF NOT EXISTS workouts (
@@ -74,14 +63,71 @@ db.run(`
   )
 `);
 
-// Routes
-// ✅ New Route: Earn XP and Delete Workout
+db.run(`
+  CREATE TABLE IF NOT EXISTS workout_history (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    title TEXT NOT NULL,
+    category TEXT,
+    duration INTEGER,
+    date TEXT,
+    xp_gain INTEGER DEFAULT 0,
+    completed_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+  )
+`);
+
+db.run(`
+  CREATE TABLE IF NOT EXISTS weekly_stats (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    week_start TEXT,
+    week_end TEXT,
+    total_workouts INTEGER,
+    total_xp INTEGER,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+  )
+`);
+
+db.run(`
+  CREATE TABLE IF NOT EXISTS goals (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    type TEXT NOT NULL,
+    target INTEGER NOT NULL,
+    current INTEGER DEFAULT 0,
+    is_completed INTEGER DEFAULT 0,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+  )
+`);
+
+const guestEmail = 'demo@guest.com';
+const guestPassword = 'guest123';
+
+db.get(`SELECT * FROM users WHERE email = ?`, [guestEmail], async (err, user) => {
+  if (err) return console.error('Error checking demo user:', err.message);
+  if (!user) {
+    const hashedPassword = await bcrypt.hash(guestPassword, 10);
+    db.run(
+      `INSERT INTO users (username, email, password, xp, level) VALUES (?, ?, ?, ?, ?)`,
+      ['Demo User', guestEmail, hashedPassword, 0, 0],
+      (err) => {
+        if (err) {
+          console.error('Failed to insert demo user:', err.message);
+        } else {
+          console.log('✅ Demo user created successfully.');
+        }
+      }
+    );
+  } else {
+    console.log('ℹ️ Demo user already exists.');
+  }
+});
+
 app.post('/api/earn-xp-and-delete', (req, res) => {
   const { userId, workoutId, xpGain } = req.body;
-
-  if (!userId || !workoutId || !xpGain) {
-    return res.status(400).json({ error: 'Missing required fields.' });
-  }
+  if (!userId || !workoutId || !xpGain) return res.status(400).json({ error: 'Missing required fields.' });
 
   db.serialize(() => {
     db.get(`SELECT xp, level FROM users WHERE id = ?`, [userId], (err, user) => {
@@ -89,24 +135,142 @@ app.post('/api/earn-xp-and-delete', (req, res) => {
 
       let newXP = user.xp + xpGain;
       let newLevel = user.level;
-
       if (newXP >= 300) {
-        newXP = newXP - 300;
+        newXP -= 300;
         newLevel += 1;
       }
 
       db.run(`UPDATE users SET xp = ?, level = ? WHERE id = ?`, [newXP, newLevel, userId], function (err) {
         if (err) return res.status(500).json({ error: err.message });
+        
+        db.all(`SELECT * FROM goals WHERE user_id = ? AND is_completed = 0`, [userId], (err, goals) => {
+          if (!err && goals.length > 0) {
+            goals.forEach((goal) => {
+              let newValue = goal.current;
+              if (goal.type === 'xp') newValue += xpGain;
+              else if (goal.type === 'workouts') newValue += 1;
 
-        db.run(`DELETE FROM workouts WHERE id = ?`, [workoutId], function (err) {
-          if (err) return res.status(500).json({ error: err.message });
+              const isDone = newValue >= goal.target ? 1 : 0;
+              db.run(
+                `UPDATE goals SET current = ?, is_completed = ? WHERE id = ?`,
+                [newValue, isDone, goal.id]
+        );
+      });
+    }
+  });
 
-          return res.json({ message: 'XP updated and workout deleted.', xp: newXP, level: newLevel });
+        db.get(`SELECT * FROM workouts WHERE id = ?`, [workoutId], (err, workout) => {
+          if (err || !workout) return res.status(500).json({ error: 'Workout not found.' });
+
+          db.run(
+            `INSERT INTO workout_history (user_id, title, category, duration, date, xp_gain)
+             VALUES (?, ?, ?, ?, ?, ?)`,
+            [workout.user_id, workout.title, workout.category, workout.duration, workout.date, xpGain],
+            (err) => {
+              if (err) return res.status(500).json({ error: 'Failed to save workout history.' });
+
+              db.run(`DELETE FROM workouts WHERE id = ?`, [workoutId], function (err) {
+                if (err) return res.status(500).json({ error: err.message });
+                return res.json({ message: 'XP updated and workout completed.', xp: newXP, level: newLevel });
+              });
+            }
+          );
         });
       });
     });
   });
 });
+
+app.post('/api/goals', (req, res) => {
+  const { userId, type, target } = req.body;
+  if (!userId || !type || !target) {
+    return res.status(400).json({ error: 'Missing fields' });
+  }
+
+  db.run(
+    `INSERT INTO goals (user_id, type, target) VALUES (?, ?, ?)`,
+    [userId, type, target],
+    function (err) {
+      if (err) return res.status(500).json({ error: err.message });
+      res.status(201).json({ message: 'Goal created', goalId: this.lastID });
+    }
+  );
+});
+
+app.get('/api/goals/:userId', (req, res) => {
+  const { userId } = req.params;
+
+  db.all(
+    `SELECT * FROM goals WHERE user_id = ? ORDER BY created_at DESC`,
+    [userId],
+    (err, rows) => {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json(rows);
+    }
+  );
+});
+
+// ✅ Delete Goal
+app.delete('/api/goals/:id', (req, res) => {
+  const goalId = req.params.id;
+
+  db.run(`DELETE FROM goals WHERE id = ?`, [goalId], function (err) {
+    if (err) return res.status(500).json({ error: err.message });
+
+    if (this.changes === 0) {
+      return res.status(404).json({ error: 'Goal not found' });
+    }
+
+    res.json({ message: 'Goal deleted successfully' });
+  });
+});
+
+
+const resetWeeklyStatsIfMonday = () => {
+  const today = new Date();
+  const isMonday = today.getDay() === 1;
+
+  if (!isMonday) return;
+
+  const monday = new Date(today);
+  monday.setHours(0, 0, 0, 0);
+
+  const sunday = new Date(monday);
+  sunday.setDate(monday.getDate() + 6);
+
+  const weekStart = monday.toISOString().split('T')[0];
+  const weekEnd = sunday.toISOString().split('T')[0];
+
+  db.all(`SELECT DISTINCT user_id FROM workout_history`, [], (err, users) => {
+    if (err) return console.error('Failed to fetch users for weekly reset:', err.message);
+
+    users.forEach(({ user_id }) => {
+      db.get(`
+        SELECT COUNT(*) AS total_workouts, SUM(xp_gain) AS total_xp
+        FROM workout_history
+        WHERE user_id = ?
+      `, [user_id], (err, stats) => {
+        if (err) return console.error(`Error fetching stats for user ${user_id}:`, err.message);
+
+        const { total_workouts = 0, total_xp = 0 } = stats;
+
+        db.run(`
+          INSERT INTO weekly_stats (user_id, week_start, week_end, total_workouts, total_xp)
+          VALUES (?, ?, ?, ?, ?)
+        `, [user_id, weekStart, weekEnd, total_workouts, total_xp], (err) => {
+          if (err) return console.error('Error inserting into weekly_stats:', err.message);
+
+          db.run(`DELETE FROM workout_history WHERE user_id = ?`, [user_id], (err) => {
+            if (err) console.error('Failed to clear workout_history after reset:', err.message);
+            else console.log(`✅ Weekly stats stored and reset for user ${user_id}`);
+          });
+        });
+      });
+    });
+  });
+};
+
+resetWeeklyStatsIfMonday();
 
 app.get('/', (req, res) => {
   res.send('Welcome to AI Gym Master API');
@@ -160,13 +324,26 @@ app.post('/api/register', async (req, res) => {
     return res.status(400).json({ error: 'All fields are required.' });
   }
 
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const query = `INSERT INTO users (username, email, password, xp, level) VALUES (?, ?, ?, 0, 0)`;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ error: 'Invalid email format.' });
+  }
 
-  db.run(query, [username, email, hashedPassword], function (err) {
-    if (err) return res.status(500).json({ error: 'User already exists or DB error.' });
-    res.status(201).json({ message: 'User registered successfully.', userId: this.lastID });
-  });
+  if (password.length < 6) {
+    return res.status(400).json({ error: 'Password must be at least 6 characters long.' });
+  }
+
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const query = `INSERT INTO users (username, email, password, xp, level) VALUES (?, ?, ?, 0, 0)`;
+
+    db.run(query, [username, email, hashedPassword], function (err) {
+      if (err) return res.status(500).json({ error: 'User already exists or DB error.' });
+      res.status(201).json({ message: 'User registered successfully.', userId: this.lastID });
+    });
+  } catch (err) {
+    res.status(500).json({ error: 'Server error.' });
+  }
 });
 
 // ✅ Login with XP and Level
@@ -252,6 +429,7 @@ app.get('/api/workouts/:userId', (req, res) => {
   });
 });
 
+
 // ✅ Delete workout
 
 app.delete('/api/delete-workout/:id', (req, res) => {
@@ -302,6 +480,15 @@ app.get('/api/users', (req, res) => {
   });
 });
 
+// ✅ Get completed workout history for user
+app.get('/api/workout-history/:userId', (req, res) => {
+  const { userId } = req.params;
+  db.all(`SELECT * FROM workout_history WHERE user_id = ? ORDER BY date`, [userId], (err, rows) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json(rows);
+  });
+});
+
 // ✅ Leaderboard - Top 3 χρήστες με τα περισσότερα level
 app.get('/api/leaderboard', (req, res) => {
   const sql = `
@@ -317,6 +504,23 @@ app.get('/api/leaderboard', (req, res) => {
     }
     res.json(rows);
   });
+});
+
+// ✅ Get Weekly Stats History for a user
+app.get('/api/weekly-stats/:userId', (req, res) => {
+  const userId = req.params.userId;
+
+  db.all(
+    `SELECT week_start, week_end, total_workouts, total_xp 
+     FROM weekly_stats 
+     WHERE user_id = ? 
+     ORDER BY week_start DESC`,
+    [userId],
+    (err, rows) => {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json(rows);
+    }
+  );
 });
 
 

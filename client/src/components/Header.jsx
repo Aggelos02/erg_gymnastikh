@@ -11,6 +11,7 @@ const Header = () => {
   const isLoggedIn = !!userId;
 
   const [showMenu, setShowMenu] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   const handleLogout = () => {
     localStorage.removeItem('userId');
@@ -73,7 +74,7 @@ const Header = () => {
                 {isLoggedIn ? (
                   <>
                     <a href="/dashboard" className="text-dark font-medium hover:text-primary border-b-2 border-transparent hover:border-primary transition duration-200">Overview</a>
-                    <a href="/plan" className="text-dark font-medium hover:text-primary border-b-2 border-transparent hover:border-primary transition duration-200">My Plan</a>
+                    <a href="/leaderboard" className="text-dark font-medium hover:text-primary border-b-2 border-transparent hover:border-primary transition duration-200">Leaderboard</a>
                     <a href="/charts" className="text-dark font-medium hover:text-primary border-b-2 border-transparent hover:border-primary transition duration-200">Charts</a>
                     <a href="/settings" className="text-dark font-medium hover:text-primary border-b-2 border-transparent hover:border-primary transition duration-200">Settings</a>
                   </>
@@ -87,6 +88,36 @@ const Header = () => {
                   </>
                 )}
               </div>
+
+              <div className="md:hidden flex items-center">
+                <button
+                  onClick={() => setShowMobileMenu(!showMobileMenu)}
+                  className="text-2xl text-primary focus:outline-none"
+                >
+                  <i className="fas fa-bars"></i>
+                </button>
+              </div>
+
+              {showMobileMenu && (
+                <div className="absolute top-16 left-0 w-full bg-white shadow-md z-40 md:hidden">
+                  <div className="flex flex-col px-4 py-3 space-y-2">
+                    {isLoggedIn ? (
+                      <>
+                        <a href="/dashboard" className="text-dark hover:text-primary">Overview</a>
+                        <a href="/leaderboard" className="text-dark hover:text-primary">Leaderboard</a>
+                        <a href="/charts" className="text-dark hover:text-primary">Charts</a>
+                        <a href="/settings" className="text-dark hover:text-primary">Settings</a>
+                        <button onClick={handleLogout} className="text-left text-dark hover:text-red-600">Logout</button>
+                      </>
+                    ) : (
+                      <>
+                        <a href="/login" className="text-dark hover:text-primary">Login</a>
+                        <a href="/signup" className="text-dark hover:text-primary">Sign Up</a>
+                      </>
+                    )}
+                  </div>
+                </div>
+              )}
 
               <div className="hidden md:flex md:items-center space-x-3">
                 {isLoggedIn ? (

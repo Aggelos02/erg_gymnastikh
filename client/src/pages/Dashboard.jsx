@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Leaderboard from '../components/Leaderboard';
+import GoalTracker from '../components/GoalTracker';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -140,8 +141,7 @@ const Dashboard = () => {
   if (totalXP >= 2000) strengthLabel = 'Advanced';
   if (totalXP >= 2800) strengthLabel = 'Elite';
 
-  const initialGain = getXPGain(1);
-  const completedWorkouts = Math.floor(totalXP / initialGain);
+  const earnedWorkouts = Math.floor(totalXP / 50); // ✅ μόνο όταν γίνεται Earn XP
 
   let goalProgressDisplay = 'Top Rank!';
   const currentIndex = leaderboard.findIndex(u => u.username === user.username);
@@ -180,6 +180,9 @@ const Dashboard = () => {
       </header>
 
       <Leaderboard />
+      <div className="mb-8">
+        <GoalTracker />
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white p-6 rounded-2xl shadow">
@@ -202,7 +205,7 @@ const Dashboard = () => {
           <h2 className="text-xl font-semibold text-gray-700 mb-4">📈 Your Stats</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="bg-gray-100 p-4 rounded-xl text-center">
-              <p className="text-lg font-bold">{completedWorkouts}</p>
+              <p className="text-lg font-bold">{earnedWorkouts}</p>
               <p className="text-sm text-gray-500">Workouts Completed</p>
             </div>
             <div className="bg-gray-100 p-4 rounded-xl text-center">

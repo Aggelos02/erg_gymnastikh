@@ -17,22 +17,38 @@ const Login = () => {
     }
 
     try {
-      // Call the login API to authenticate the user
       const response = await axios.post('http://localhost:3001/api/login', {
         email,
         password,
       });
 
-      // ✅ Αποθήκευση του χρήστη στο localStorage
       localStorage.setItem('userId', response.data.userId);
       localStorage.setItem('username', response.data.username);
-      localStorage.setItem('xp', response.data.xp); // νέο
-      localStorage.setItem('level', response.data.level); // νέο
+      localStorage.setItem('xp', response.data.xp);
+      localStorage.setItem('level', response.data.level);
 
-      // Ανακατεύθυνση στο Dashboard
       navigate('/dashboard');
     } catch (err) {
       setError(err.response?.data?.error || 'An error occurred');
+    }
+  };
+
+  const handleGuestLogin = async () => {
+    try {
+      const response = await axios.post("http://localhost:3001/api/login", {
+        email: "demo@guest.com",
+        password: "guest123",
+      });
+
+      const { userId, username, xp, level } = response.data;
+      localStorage.setItem("userId", userId);
+      localStorage.setItem("username", username);
+      localStorage.setItem("xp", xp);
+      localStorage.setItem("level", level);
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Guest login failed", error);
+      setError("Guest login failed. Try again later.");
     }
   };
 
@@ -57,6 +73,14 @@ const Login = () => {
           />
           <button className="w-full bg-primary text-white py-2 rounded hover:bg-blue-700 transition">
             Login
+          </button>
+
+          <button
+            type="button"
+            onClick={handleGuestLogin}
+            className="w-full mt-2 bg-gray-700 text-white py-2 rounded hover:bg-gray-800 transition"
+          >
+            Try as Guest
           </button>
         </form>
 
