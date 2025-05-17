@@ -1,7 +1,7 @@
 
-# 🏋️‍♂️ AI Gym Master
+# 🏋️‍♂️ Gym Master
 
-Το **AI Gym Master** είναι μια ολοκληρωμένη web εφαρμογή για την οργάνωση και παρακολούθηση προπονήσεων. Είναι βασισμένη σε **React** (frontend) και **Node.js + Express** (backend) με **SQLite** βάση δεδομένων. Περιλαμβάνει σύστημα XP/Level, στατιστικά, δυναμική βιβλιοθήκη ασκήσεων, και διαδραστικό εβδομαδιαίο πρόγραμμα.
+Το **Gym Master** είναι μια ολοκληρωμένη web εφαρμογή για την οργάνωση και παρακολούθηση προπονήσεων. Είναι βασισμένη σε **React** (frontend) και **Node.js + Express** (backend) με **SQLite** βάση δεδομένων. Περιλαμβάνει σύστημα XP/Level, στατιστικά, δυναμική βιβλιοθήκη ασκήσεων και διαδραστικό εβδομαδιαίο πρόγραμμα.
 
 ---
 
@@ -42,15 +42,14 @@ npm run dev
 
 🏋️ Προγράμματα & Ασκήσεις
 Προσθήκη, Προβολή και Διαγραφή Ασκήσεων
-Εβδομαδιαίο Πλάνο προπονήσεων (Smart Weekly Schedule)
+Εβδομαδιαίο Πλάνο Προπονήσεων (Smart Weekly Schedule)
 Ομαδοποίηση ασκήσεων ανά ημέρα
 
 📈 Παρακολούθηση Προόδου
-Δείκτες:
-  Workouts Completed
-  Strength Gain (βάσει XP)
-  Goal Progress με συγκριτικό πίνακα
-  Visual XP Progress Bar
+Workouts Completed
+Strength Gain (βάσει XP)
+Goal Progress με συγκριτικό πίνακα
+Visual XP Progress Bar
 
 🏆 Gamification
 Σύστημα XP και Επίπεδων
@@ -112,17 +111,14 @@ erg_gymnastikh/
 ---
 
 ## 🧠 Σχέσεις Βάσης Δεδομένων (ERD)
-users
-id	username	email	password	xp	level
+users: id, username, email, password, xp, level
 
-workouts
-id	user_id	title	category	duration	date	notes
+workouts: id, user_id, title, category, duration, date, notes
 
-exercises
-id	name	category	description
+exercises: id, name, category, description
 
-➤ Κάθε άσκηση σχετίζεται με έναν συγκεκριμένο χρήστη.  
-➤ Υποστήριξη πολλών ασκήσεων ανά χρήστη.
+➤ Κάθε άσκηση σχετίζεται με έναν συγκεκριμένο χρήστη
+➤ Υποστήριξη πολλών ασκήσεων ανά χρήστη
 
 ---
 
@@ -159,4 +155,4 @@ id	name	category	description
 
 ## 📄 Άδεια Χρήσης
 
-© 2025 AI Gym Master. All rights reserved.
+© 2025 Gym Master. All rights reserved.
