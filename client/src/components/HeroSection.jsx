@@ -7,10 +7,10 @@ const HeroSection = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div>
             <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6">
-              Organize & Monitor Your Gym Workouts with AI
+              Organize & Monitor Your Gym Workouts
             </h1>
             <p className="text-lg md:text-xl opacity-90 mb-8">
-              Create personalized exercise programs, track your performance, and achieve your fitness goals faster with our intelligent monitoring system.
+              Create personalized exercise programs, track your performance, and achieve your fitness goals faster with our personalized tracking system.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <a href="#" className="px-6 py-3 bg-white text-primary font-bold rounded-lg hover:bg-gray-100 transition duration-300 text-center">
@@ -29,12 +29,12 @@ const HeroSection = () => {
                   <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
                   <div className="w-3 h-3 rounded-full bg-green-500"></div>
                 </div>
-                <div className="ml-4 text-sm text-gray-600">AI Workout Dashboard</div>
+                <div className="ml-4 text-sm text-gray-600">Workout Dashboard</div>
               </div>
               <div className="p-6">
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="text-lg font-semibold text-dark">Weekly Plan</h3>
-                  <span className="text-xs bg-primary bg-opacity-10 text-primary px-2 py-1 rounded-full">AI Generated</span>
+                  <span className="text-xs bg-primary bg-opacity-10 text-primary px-2 py-1 rounded-full">Custom Plan</span>
                 </div>
 
                 <div className="grid grid-cols-3 gap-2 mb-4">
@@ -63,8 +63,8 @@ const HeroSection = () => {
                   <i className="fas fa-robot text-xl"></i>
                 </div>
                 <div>
-                  <h4 className="font-medium text-dark">AI Assistant</h4>
-                  <p className="text-sm text-gray-500">Ready to help</p>
+                  <h4 className="font-medium text-dark">Track your goals!</h4>
+                  <p className="text-sm text-gray-500">Stay on track 💪</p>
                 </div>
               </div>
             </div>

@@ -5,9 +5,9 @@ const WeeklyPlanner = () => {
     <section id="weekly-plan" className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold text-dark mb-4">Smart Weekly Planning</h2>
+          <h2 className="text-3xl font-bold text-dark mb-4">Weekly Planning</h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Let our AI help you create the perfect weekly workout schedule based on your goals and availability.
+            Create the perfect weekly workout schedule based on your goals and availability.
           </p>
         </div>
 
@@ -79,10 +79,10 @@ const WeeklyPlanner = () => {
           <div className="p-6 border-t border-gray-200 bg-gray-50">
             <div className="flex flex-col sm:flex-row justify-between items-center">
               <p className="text-gray-600 mb-4 sm:mb-0">
-                Need to adjust your schedule? Our AI will automatically rebalance your workouts.
+                Need to adjust your schedule? You can adjust your schedule anytime.
               </p>
               <button className="px-4 py-2 bg-primary text-white font-medium rounded-md hover:bg-blue-700 transition duration-300">
-                Generate New Plan
+                Create Plan
               </button>
             </div>
           </div>

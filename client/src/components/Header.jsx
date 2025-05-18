@@ -56,7 +56,7 @@ const Header = () => {
         <div className="flex justify-between h-16 items-center">
           <div className="flex items-center cursor-pointer" onClick={() => window.location.href = '/'}>
             <i className="fas fa-dumbbell text-primary text-2xl mr-2"></i>
-            <span className="text-xl font-bold text-dark">AI Gym Master</span>
+            <span className="text-xl font-bold text-dark">Gym Master</span>
           </div>
 
           {isAuthPage ? (

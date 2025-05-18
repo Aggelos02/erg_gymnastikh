@@ -174,24 +174,24 @@ const Dashboard = () => {
   });
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gray-50 px-6 md:px-12 py-10">
       <header className="mb-8">
         <h1 className="text-3xl font-bold text-gray-800">Welcome back, {user.username}!</h1>
       </header>
 
       <Leaderboard />
-      <div className="mb-8">
+      <div className="mb-8 px-6 md:px-12 py-6">
         <GoalTracker />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white p-6 rounded-2xl shadow">
-          <h2 className="text-xl font-semibold text-gray-700 mb-2">🏆 Level {user.level}</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 px-6 md:px-12 py-6">
+        <div className="bg-white p-6 rounded-2xl shadow transition duration-300 transform hover:scale-105 hover:shadow-lg">
+          <h2 className="text-xl font-semibold text-gray-700 mb-2"><span className="text-2xl bg-yellow-100 p-2 rounded-full mr-2">🏆</span>Level {user.level}</h2>
           <p className="text-gray-500">Keep training to level up!</p>
         </div>
 
-        <div className="bg-white p-6 rounded-2xl shadow">
-          <h2 className="text-xl font-semibold text-gray-700 mb-2">XP Progress</h2>
+        <div className="bg-white p-6 rounded-2xl shadow transition duration-300 transform hover:scale-105 hover:shadow-lg">
+          <h2 className="text-xl font-semibold text-gray-700 mb-2"><span className="text-2xl bg-blue-100 p-2 rounded-full mr-2">🧠</span>XP Progress</h2>
           <p className="text-sm text-gray-500 mb-2">{user.xp} / {xpToNextLevel} XP</p>
           <div className="w-full bg-gray-200 h-4 rounded-full">
             <div
@@ -202,17 +202,17 @@ const Dashboard = () => {
         </div>
 
         <div className="bg-white p-6 rounded-2xl shadow col-span-1 md:col-span-2">
-          <h2 className="text-xl font-semibold text-gray-700 mb-4">📈 Your Stats</h2>
+          <h2 className="text-xl font-semibold text-gray-700 mb-4"><span className="text-2xl bg-green-100 p-2 rounded-full mr-2">📈</span>Your Stats</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="bg-gray-100 p-4 rounded-xl text-center">
+            <div className="bg-gray-100 p-4 rounded-xl text-center transition duration-300 transform hover:scale-105 hover:shadow">
               <p className="text-lg font-bold">{earnedWorkouts}</p>
               <p className="text-sm text-gray-500">Workouts Completed</p>
             </div>
-            <div className="bg-gray-100 p-4 rounded-xl text-center">
+            <div className="bg-gray-100 p-4 rounded-xl text-center transition duration-300 transform hover:scale-105 hover:shadow">
               <p className="text-lg font-bold">{strengthLabel} (+{strengthGainPercent}%)</p>
               <p className="text-sm text-gray-500">Strength Gain</p>
             </div>
-            <div className="bg-gray-100 p-4 rounded-xl text-center">
+            <div className="bg-gray-100 p-4 rounded-xl text-center transition duration-300 transform hover:scale-105 hover:shadow">
               <p className="text-lg font-bold">{goalProgressDisplay}</p>
               <p className="text-sm text-gray-500">Goal Progress</p>
             </div>
@@ -221,7 +221,7 @@ const Dashboard = () => {
 
         {/* Weekly Plan */}
         <div className="bg-white p-6 rounded-2xl shadow col-span-1 md:col-span-2">
-          <h2 className="text-xl font-semibold text-gray-700 mb-4">📅 Weekly Workout Schedule</h2>
+          <h2 className="text-xl font-semibold text-gray-700 mb-4"><span className="text-2xl bg-purple-100 p-2 rounded-full mr-2">📅</span>Weekly Workout Schedule</h2>
           <div className="grid grid-cols-7 divide-x divide-gray-200 border border-gray-200 rounded-lg overflow-hidden text-center text-sm">
             {days.map((day) => (
               <div key={day} className="p-2 min-h-32">
@@ -230,8 +230,8 @@ const Dashboard = () => {
                   <p className="text-gray-400">No workout</p>
                 ) : (
                   workoutsByDay[day].map((workout) => (
-                    <div key={workout.id} className="mb-2 p-2 rounded-lg bg-blue-100">
-                      <p className="font-medium text-gray-800 text-sm">{workout.title}</p>
+                    <div key={workout.id} className="mb-2 p-2 rounded-lg bg-blue-100 transition duration-300 transform hover:scale-105 hover:shadow">
+                      <p className="font-medium text-gray-800 text-sm"><span className="text-lg mr-1">🏋️</span>{workout.title}</p>
                       <p className="text-xs text-gray-600">{workout.duration} min</p>
                       <p className="text-xs italic text-gray-400">{workout.notes}</p>
                       <button
@@ -256,7 +256,7 @@ const Dashboard = () => {
 
         {/* Add Workout */}
         <div className="bg-white p-6 rounded-2xl shadow col-span-1 md:col-span-2">
-          <h2 className="text-xl font-semibold text-gray-700 mb-4">➕ Add New Workout</h2>
+          <h2 className="text-xl font-semibold text-gray-700 mb-4"><span className="text-2xl bg-indigo-100 p-2 rounded-full mr-2">➕</span>Add New Workout</h2>
           {message && <p className="text-green-500 text-sm mb-4">{message}</p>}
           <form onSubmit={handleFormSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input name="title" value={form.title} onChange={handleFormChange} placeholder="Title" className="p-2 border rounded" required />
@@ -264,7 +264,7 @@ const Dashboard = () => {
             <input name="duration" value={form.duration} onChange={handleFormChange} placeholder="Duration (minutes)" className="p-2 border rounded" type="number" required />
             <input name="date" value={form.date} onChange={handleFormChange} placeholder="Date (YYYY-MM-DD)" className="p-2 border rounded" required />
             <textarea name="notes" value={form.notes} onChange={handleFormChange} placeholder="Notes (optional)" className="p-2 border rounded md:col-span-2" />
-            <button type="submit" className="bg-primary text-white py-2 rounded hover:bg-blue-700 transition md:col-span-2">Submit Workout</button>
+            <button type="submit" className="bg-primary text-white py-2 rounded hover:bg-blue-700 transition md:col-span-2">➕ Submit Workout</button>
           </form>
         </div>
       </div>
