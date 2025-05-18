@@ -1,6 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const HeroSection = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="bg-gradient-to-r from-blue-500 via-cyan-500 to-green-400 text-white py-16 md:py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -13,9 +16,12 @@ const HeroSection = () => {
               Create personalized exercise programs, track your performance, and achieve your fitness goals faster with our personalized tracking system.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <a href="#" className="px-6 py-3 bg-white text-primary font-bold rounded-lg hover:bg-gray-100 transition duration-300 text-center">
+              <button
+                onClick={() => navigate('/login')}
+                className="px-6 py-3 bg-white text-primary font-bold rounded-lg hover:bg-gray-100 transition duration-300 text-center"
+              >
                 Start Free Trial
-              </a>
+              </button>
               <a href="#features" className="px-6 py-3 border-2 border-white text-white font-bold rounded-lg hover:bg-white hover:bg-opacity-10 transition duration-300 text-center">
                 Explore Features
               </a>
