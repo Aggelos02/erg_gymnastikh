@@ -141,20 +141,22 @@ const Dashboard = () => {
   if (totalXP >= 2000) strengthLabel = 'Advanced';
   if (totalXP >= 2800) strengthLabel = 'Elite';
 
-  const earnedWorkouts = Math.floor(totalXP / 50); // ✅ μόνο όταν γίνεται Earn XP
+  const earnedWorkouts = Math.floor(totalXP / 50);
 
   let goalProgressDisplay = 'Top Rank!';
   const currentIndex = leaderboard.findIndex(u => u.username === user.username);
+  const currentXP = user.level * xpToNextLevel + user.xp;
+
   if (leaderboard.length > 1 && currentIndex > 0) {
     const aboveUser = leaderboard[currentIndex - 1];
-    const currentXP = user.level * xpToNextLevel + user.xp;
     const aboveXP = aboveUser.level * xpToNextLevel + aboveUser.xp;
 
     if (currentXP === aboveXP) {
       goalProgressDisplay = '⚖️ Tied';
-    } else if (currentXP < aboveXP) {
+    } else {
       const diff = aboveXP - currentXP;
-      goalProgressDisplay = `${Math.max(0, 100 - (diff / xpToNextLevel) * 100).toFixed(1)}%`;
+      const percentRemaining = ((diff / aboveXP) * 100).toFixed(1);
+      goalProgressDisplay = `${percentRemaining}% to pass`;
     }
   }
 
@@ -183,6 +185,7 @@ const Dashboard = () => {
       <div className="mb-8 px-6 md:px-12 py-6">
         <GoalTracker />
       </div>
+
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 px-6 md:px-12 py-6">
         <div className="bg-white p-6 rounded-2xl shadow transition duration-300 transform hover:scale-105 hover:shadow-lg">
