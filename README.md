@@ -4,23 +4,71 @@
 
 ---
 
+
+## ✅ Προαπαιτούμενα
+Για να τρέξει η εφαρμογή σε νέο υπολογιστή χρειάζεστε:
+
+- [Node.js](https://nodejs.org/) (v18 ή νεότερο)
+- npm (v9 ή νεότερο)
+- Git
+
+Μπορείτε να ελέγξετε τις εκδόσεις με:
+```bash
+node -v
+npm -v
+```
+
+---
+
 ## 🚀 Demo (τοπικά)
 
+### Κλωνοποίηση του αποθετηρίου:
 ```bash
 git clone https://github.com/Aggelos02/erg_gymnastikh.git
 cd erg_gymnastikh
 
-# Server
+
+### Εκκίνηση Backend:
+
 cd server
 npm install
 npm run dev
 
-# Client (σε νέο τερματικό)
-cd ../client
+Ο backend server τρέχει στη θύρα `http://localhost:3001`
+
+### Εκκίνηση Frontend (σε νέο τερματικό):
+
+cd client
 npm install
 npm run dev
 ```
+Το frontend τρέχει στη θύρα `http://localhost:5173`
 
+📦 Βασικά Πακέτα που χρησιμοποιούνται
+Client (/client)
+
+- React
+- react-router-dom
+- axios
+- react-chartjs-2
+- chart.js
+- tailwindcss
+- @fortawesome/fontawesome-free
+
+Server (/server)
+- express
+- sqlite3
+- bcrypt
+- nodemailer
+
+❗ Troubleshooting
+Αν δεν ανοίγει η εφαρμογή, βεβαιωθείτε ότι:
+  - Έχετε τρέξει npm install και στα δύο folders (client και server)
+  - Έχετε ανοίξει δύο τερματικά: ένα για backend (npm run dev στο /server) και ένα για frontend (npm run dev στο /client)
+  - Το Node.js είναι εγκατεστημένο
+Αν δείτε σφάλμα για λείπον πακέτο, δοκιμάστε:
+
+npm install <package-name>
 ---
 
 ## ⚙️ Τεχνολογίες
